@@ -5,6 +5,7 @@ const connectDB = async () => {
 
   try {
     await mongoose.connect(process.env.MONGODB_URI, {
+      dbName: 'facematrix',  // Your actual DB name here
       useNewUrlParser: true,
       useUnifiedTopology: true,
     });
