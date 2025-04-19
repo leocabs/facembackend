@@ -36,6 +36,12 @@ router.get('/all', async (req, res) => {
   }
 });
 
+
+router.get('/', (req, res) => {
+  res.send("Hello");
+});
+
+
 // GET: Fetch images for a specific user (optional, if needed)
 router.get('/user/:userId', async (req, res) => {
   try {
