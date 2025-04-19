@@ -1,14 +1,15 @@
-import connectDB from './lib/connectDB';
-import Image from '../models/Image';  // Your Mongoose model
+// pages/api/images/index.js
+import connectDB from '../../lib/connectDB'; // Adjusted path to connectDB
+import Image from '../../models/Image'; // Ensure the Image model is correct
 
 export default async function handler(req, res) {
-  // CORS Headers
+  // CORS Headers (this can be more dynamic, but this will allow all origins)
   res.setHeader('Access-Control-Allow-Origin', '*');
-  res.setHeader('Access-Control-Allow-Methods', 'GET,DELETE,OPTIONS');
+  res.setHeader('Access-Control-Allow-Methods', 'GET, DELETE, OPTIONS');
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
 
   if (req.method === 'OPTIONS') {
-    return res.status(200).end();
+    return res.status(200).end(); // Handle OPTIONS pre-flight requests
   }
 
   try {
@@ -16,10 +17,10 @@ export default async function handler(req, res) {
 
     if (req.method === 'GET') {
       // Fetch all images
-      const images = await Image.find();
+      const images = await Image.find(); // Adjust this to your query logic
       return res.status(200).json(images);
-    } 
-    else if (req.method === 'DELETE') {
+    } else if (req.method === 'DELETE') {
+      // Delete image by id from query params
       const { id } = req.query;
       if (!id) {
         return res.status(400).json({ message: 'Missing image id' });
@@ -34,8 +35,8 @@ export default async function handler(req, res) {
       // Delete the image
       await Image.findByIdAndDelete(id);
       return res.status(200).json({ message: 'Image deleted successfully' });
-    }
-    else {
+    } else {
+      // Handle other methods
       return res.status(405).json({ message: 'Method not allowed' });
     }
   } catch (err) {
