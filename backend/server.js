@@ -9,7 +9,7 @@ const PORT = process.env.PORT || 5000; // Use environment port in production
 
 // CORS setup (optional to restrict origins)
 const allowedOrigins = process.env.NODE_ENV === 'production'
-  ? ['https://facematrix.vercel.app']
+  ? ['facematrix.netlify.app']
   : ['http://localhost:5173', 'http://localhost:5000'];
 
 app.use(cors({ origin: allowedOrigins }));
