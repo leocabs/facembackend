@@ -1,4 +1,4 @@
-import connectDB from '../../../lib/connectDB';  // Ensure path is correct
+import connectDB from '../../../lib/connectDb';  // Ensure path is correct
 import Image from '../../../models/Image';      // Ensure path to the model is correct
 
 export default async function handler(req, res) {
