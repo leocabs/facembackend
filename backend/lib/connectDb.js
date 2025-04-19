@@ -1,26 +1,16 @@
-import mongoose from 'mongoose';
+// lib/connectDb.js
+const mongoose = require('mongoose');
 
 const connectDB = async () => {
-  // If the connection is already established, skip reconnecting
-  if (mongoose.connections[0].readyState) {
-    console.log('✅ Already connected to MongoDB');
-    return;
-  }
-
   try {
-    // Connect to MongoDB using the URI from environment variables
-    await mongoose.connect(process.env.MONGODB_URI, {
-      dbName: 'facematrix',  // Your actual DB name here
-      useNewUrlParser: true,
-      useUnifiedTopology: true,
+    await mongoose.connect(process.env.MONGO_URI, {
+      dbName: 'facematrix', // Your actual DB name here
     });
-
-    console.log('✅ Connected to MongoDB');
+    console.log('✅ Connected to MongoDB Atlas');
   } catch (err) {
-    // Log the error to help with debugging
     console.error('❌ MongoDB connection error:', err);
-    throw new Error('Database connection failed');
+    process.exit(1); // Exit process with failure
   }
 };
 
-export default connectDB;
+module.exports = connectDB;

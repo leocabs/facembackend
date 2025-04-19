@@ -1,46 +1,44 @@
-// pages/api/images/index.js
-import connectDB from '../../lib/connectDB'; // Adjusted path to connectDB
-import Image from '../../models/Image'; // Ensure the Image model is correct
+import connectDB from '../../../lib/connectDB';  // Ensure path is correct
+import Image from '../../../models/Image';      // Ensure path to the model is correct
 
 export default async function handler(req, res) {
-  // CORS Headers (this can be more dynamic, but this will allow all origins)
+  // CORS headers
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'GET, DELETE, OPTIONS');
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
 
   if (req.method === 'OPTIONS') {
-    return res.status(200).end(); // Handle OPTIONS pre-flight requests
+    return res.status(200).end();
   }
 
   try {
-    await connectDB(); // Connect to MongoDB
+    await connectDB();  // Ensure DB connection
 
     if (req.method === 'GET') {
-      // Fetch all images
-      const images = await Image.find(); // Adjust this to your query logic
+      // Handle GET request to fetch images
+      const images = await Image.find();
       return res.status(200).json(images);
-    } else if (req.method === 'DELETE') {
-      // Delete image by id from query params
+    } 
+    else if (req.method === 'DELETE') {
+      // Handle DELETE request to delete images
       const { id } = req.query;
       if (!id) {
-        return res.status(400).json({ message: 'Missing image id' });
+        return res.status(400).json({ message: 'Missing image ID' });
       }
 
-      // Check if the image exists
       const image = await Image.findById(id);
       if (!image) {
         return res.status(404).json({ message: 'Image not found' });
       }
 
-      // Delete the image
       await Image.findByIdAndDelete(id);
       return res.status(200).json({ message: 'Image deleted successfully' });
-    } else {
-      // Handle other methods
+    } 
+    else {
       return res.status(405).json({ message: 'Method not allowed' });
     }
   } catch (err) {
-    console.error(err); // Log error for debugging
+    console.error('Error in API handler:', err);
     return res.status(500).json({ message: 'Error processing request' });
   }
 }
