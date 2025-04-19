@@ -8,7 +8,9 @@ const app = express();
 const PORT = 5000;
 
 // CORS setup (optional to restrict origins)
-app.use(cors());  // You can specify origins like: app.use(cors({ origin: 'http://yourfrontend.com' }));
+app.use(cors({
+  origin: ['https://facembackend.vercel.app', 'http://localhost:5173'] // Corrected: no trailing slash
+}));
 
 // Middleware for JSON and URL-encoded body parsing with size limit
 app.use(express.json({ limit: '50mb' }));
@@ -24,8 +26,9 @@ mongoose.connect(process.env.MONGO_URI, {
 .catch(err => console.error('❌ MongoDB connection error:', err));
 
 // Route handling for image uploads
-app.use('/api/images', imageRoutes);
-app.use('/api', imageRoutes);
+app.use('/api/images', imageRoutes);  // You only need this line
+// app.use('/api', imageRoutes); // Remove if unnecessary
+
 // Start the server
 app.listen(PORT, () => {
   console.log(`🚀 Server running on http://localhost:${PORT}`);
