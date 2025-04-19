@@ -9,7 +9,7 @@ const PORT = 5000;
 
 // CORS setup (optional to restrict origins)
 app.use(cors({
-  origin: ['https://facembackend.vercel.app', 'http://localhost:5173'] // Corrected: no trailing slash
+  origin: ['https://facematrix.vercel.app', 'http://localhost:5173'] // Corrected: no trailing slash
 }));
 
 // Middleware for JSON and URL-encoded body parsing with size limit
