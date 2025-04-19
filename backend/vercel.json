@@ -2,25 +2,14 @@
   "version": 2,
   "builds": [
     {
-      "src": "frontend/package.json",
-      "use": "@vercel/react",
-      "config": {
-        "outputDirectory": "build"
-      }
-    },
-    {
-      "src": "backend/package.json",
+      "src": "pages/api/images/index.js",  
       "use": "@vercel/node"
     }
   ],
   "routes": [
     {
-      "src": "/api/(.*)",
-      "dest": "backend/pages/api/$1"
-    },
-    {
-      "src": "/(.*)",
-      "dest": "frontend/$1"
+      "src": "/api/images/(.*)",  
+      "dest": "/pages/api/images/index.js" 
     }
   ]
 }
