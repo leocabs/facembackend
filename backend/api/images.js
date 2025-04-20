@@ -14,7 +14,7 @@ export default async function handler(req, res) {
 
   try {
     await connectDB();  // Ensure DB connection
-
+ 
     if (req.method === 'GET') {
       // Handle GET request to fetch images
       const images = await Image.find();
