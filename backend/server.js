@@ -24,7 +24,7 @@ const imageSchema = new mongoose.Schema({
 
 const Image = mongoose.model('Image', imageSchema);
 const corsOptions = {
-  origin: ['http://localhost:5173', 'https://facematrix.netlify.app/'] ,// Replace with your frontend URL
+  origin: 'http://localhost:5173',  // Replace with your frontend URL
   methods: ['GET', 'POST', 'PUT', 'DELETE'], // Allowed HTTP methods
   credentials: true, // Allow credentials such as cookies or authentication headers
 };
