@@ -1,9 +1,0 @@
-{
-  "version": 2,
-  "builds": [
-    {
-      "src": "api/images.js",  
-      "use": "@vercel/node"
-    }
-  ]
-}
