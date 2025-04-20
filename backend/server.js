@@ -7,10 +7,10 @@ const PORT = process.env.PORT || 5000;
 
 // MongoDB Image Schema
 const emotionSchema = new mongoose.Schema({
-  icon: String, // icon path
-  mood: String, // 'Happy', 'Sad', etc.
-  color: String, // 'bg-blue-100'
-  number: Number // number of times detected
+  icon: String,
+  mood: String,
+  color: String,
+  number: Number
 });
 
 const imageSchema = new mongoose.Schema({
@@ -23,25 +23,21 @@ const imageSchema = new mongoose.Schema({
 });
 
 const Image = mongoose.model('Image', imageSchema);
-const corsOptions = {
-  origin: 'http://localhost:5173',  // Replace with your frontend URL
-  methods: ['GET', 'POST', 'PUT', 'DELETE'], // Allowed HTTP methods
-  credentials: true, // Allow credentials such as cookies or authentication headers
-};
 
-// Enable CORS with the specified options
+// CORS Configuration
+const corsOptions = {
+  origin: 'http://localhost:5173',
+  methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  credentials: true
+};
 app.use(cors(corsOptions));
 
 // Middleware for JSON and URL-encoded body parsing
-app.use(express.json({ limit: '50mb' }));
-app.use(express.urlencoded({ limit: '50mb', extended: true }));
+app.use(express.json({ limit: '10mb' })); // Adjusted to 10MB limit
+app.use(express.urlencoded({ limit: '10mb', extended: true }));
 
 // MongoDB connection
-mongoose.connect(process.env.MONGO_URI, {
-  dbName: 'facematrix',
-  useNewUrlParser: true,
-  useUnifiedTopology: true
-})
+mongoose.connect(process.env.MONGO_URI, { dbName: 'facematrix' })
   .then(() => console.log('✅ Connected to MongoDB Atlas'))
   .catch(err => console.error('❌ MongoDB connection error:', err));
 
@@ -49,6 +45,12 @@ mongoose.connect(process.env.MONGO_URI, {
 app.post('/images/upload', async (req, res) => {
   try {
     const { userId, id, image, timestamp, dominantEmotion, emotion } = req.body;
+
+    // Check for required fields
+    if (!userId || !id || !image || !timestamp || !dominantEmotion || !emotion) {
+      return res.status(400).json({ message: 'Missing required fields.' });
+    }
+
     const newImage = new Image({ userId, id, image, timestamp, dominantEmotion, emotion });
     await newImage.save();
     res.status(201).json({ message: 'Image data saved successfully.' });
@@ -84,9 +86,15 @@ app.get('/images/user/:userId', async (req, res) => {
 // DELETE: Delete multiple images by IDs
 app.delete('/images/delete', async (req, res) => {
   try {
-    const { ids } = req.body; // Expecting an array of IDs in the request body
+    const { ids } = req.body;
+
     if (!Array.isArray(ids) || ids.length === 0) {
       return res.status(400).json({ message: 'No IDs provided.' });
+    }
+
+    // Check for valid ObjectId values
+    if (!ids.every(id => mongoose.Types.ObjectId.isValid(id))) {
+      return res.status(400).json({ message: 'Invalid IDs provided.' });
     }
 
     const result = await Image.deleteMany({ _id: { $in: ids } });
