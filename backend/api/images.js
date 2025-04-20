@@ -3,7 +3,7 @@ import Image from '../models/Image';      // Ensure path to the model is correct
 
 export default async function handler(req, res) {
   // CORS headers
-  res.setHeader('Access-Control-Allow-Origin', 'https://facematrix.vercel.app');  // Or use specific origin like 'https://yourfrontend.com'
+  res.setHeader('Access-Control-Allow-Origin', 'https://facematrix.vercel.app' , 'http://localhost:5000/');  // Or use specific origin like 'https://yourfrontend.com'
   res.setHeader('Access-Control-Allow-Methods', 'GET, DELETE, OPTIONS');
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
 
